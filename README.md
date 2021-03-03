@@ -8,6 +8,9 @@ This also installs the package manager "raco" which can be used to pull in Roset
 
 `raco install pkg rosette`
 
+Alternatively, run `raco pkg install .` to install the dependencies specified in
+`info.rkt`.
+
 ## Bitvector interpreter
 
 Emina Torlak is one of the original authors of Rosette and has some helpful code all about bitvector interpreters here:

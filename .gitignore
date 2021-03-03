@@ -4,4 +4,4 @@
 *.pdf
 *.gz
 *.bbl
-
+/compiled/
