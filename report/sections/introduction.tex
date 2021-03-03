@@ -1,0 +1,12 @@
+\section{Introduction}
+\label{introduction}
+
+Any reference to main memory brings a chunk of consecutive data to cache. This sequence of bytes, referred as a cache line, is a unit of cache-memory mapping. There are three different categories of cache organizations: 
+
+\begin{itemize}
+	\item \textbf{Direct Mapped}: every memory block brought to the cache has exactly one place (e.g, cache line j maps to cache line j mod (total cache lines)). It's fast but potentially resulting in poor utilization of the total cache.
+	
+	\item \textbf{Fully Associative Mapped}: every memory block can be placed in any available cache line. This strategy increases the cache utilization by a flexible line placement, it has high implementation overhead and energy consumption.
+
+	\item \textbf{Set Associative Mapped}: every memory block can be placed in a particular set in the cache. An n-way set-associative cache consists of a number of sets where each set can hold n cache lines.
+\end{itemize}
