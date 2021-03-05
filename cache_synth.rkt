@@ -1,6 +1,7 @@
 #lang rosette/safe
 
 (require "./config.rkt")
+(require "./data.rkt")
 (require rosette/lib/synthax)
 (require rosette/lib/angelic)
 
@@ -40,6 +41,8 @@
  #:forall (list x)
  #:guarantee (assert (equal? (hash-alg x) (bv 0 routing-bits)))))
 
-(when (solution? result)
-  (print result)
-  (print-forms result))
+(if (sat? result)
+    (begin
+      (print result)
+      (print-forms result))
+    (println "no solution"))
