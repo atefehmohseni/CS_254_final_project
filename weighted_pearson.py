@@ -48,3 +48,9 @@ def test_generation(test_size, cache_array, mod):
     # plot the distribution, should look like
     # caches list if it were a histogram
     return homes
+
+if __name__ == "__main__":
+
+    caches = [3, 2, 2, 1]
+
+    homes = test_generation(256, caches, "popcount")
