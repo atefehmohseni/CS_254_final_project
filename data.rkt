@@ -1,7 +1,6 @@
 #lang racket
 
-(provide test-cases answer-vars
-         get-block cumulative-sum get-block)
+(provide addr-block-pairs test-cases cumulative-sum)
 
 (require
  "./config.rkt"
@@ -12,10 +11,6 @@
 
 (define (cumulative-sum l)
   (reverse (foldl (lambda (next acc) (cons (+ next (if (null? acc) 0 (car acc))) acc)) '() l)))
-
-(define (get-block weights i)
-  (let ((cutoffs (cumulative-sum weights)))
-    (index-where cutoffs (lambda (y) (> y i)))))
 
 (define (mk-random-data n)
   (define maxi (expt 2 word-size))
@@ -90,13 +85,9 @@
 (define test-cases
   (map (match-lambda ([cons x b] `(,(bv x word-size) ,b))) addr-block-pairs))
 
-(define (mk-target-var)
-  (define-symbolic* b rosette-boolean?)
-  b)
-
-(define answer-vars
-  (build-list (length addr-block-pairs) (lambda (_) (mk-target-var))))
 ; (println (mk-random-data 64))
-; (println (map length (group-by (compose (lambda (i) (get-block cache-lines i)) cdr) (mk-random-data 64))))
 
-(println (map length (group-by (compose (lambda (i) (get-block cache-lines i)) cdr) addr-block-pairs)))
+; (define cutoffs (cumulative-sum cache-lines))
+; (println (map length (group-by (compose (lambda (i) (get-block cutoffs i)) cdr) (mk-random-data 64))))
+
+; (println (map length (group-by (compose (lambda (i) (get-block cutoffs i)) cdr) addr-block-pairs)))

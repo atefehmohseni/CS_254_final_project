@@ -3,6 +3,7 @@
 (require
  "./config.rkt"
  "./data.rkt"
+ "./common.rkt"
   rosette/lib/synthax
   rosette/lib/angelic
   (prefix-in racket: racket/base)
@@ -53,12 +54,27 @@
 (define synth-property
   (racket:foldl (lambda (p q) (and p q)) #t test-asserts))
 
+(define cutoffs (cumulative-sum (reverse (cdr (reverse cache-lines)))))
+(define exp-dist (map (lambda (n) (/ (* n (length test-cases)) (apply + cache-lines))) cache-lines))
+
+; test case based objective
 (define result
   (optimize
    #:maximize (racket:map (lambda (b) (if b 1 0)) answer-vars)
    #:guarantee (assert synth-property)))
 
-(define ha (first (generate-forms result)))
+; difference minimization (very slow!!!)
+; (define result
+;   (let ((output (map (lambda (t) (bitvector->natural (hash-alg (first t)))) test-cases)))
+;     (optimize
+;      #:minimize (goal-diff (group-blocks cutoffs output) exp-dist)
+;      #:guarantee (assert #t))))
+
+; dummy for testing purposes
+; (define result
+;   (synthesize
+;    #:forall '()
+;    #:guarantee (assert #f)))
 
 (racket:define-namespace-anchor ns-anc)
 (define ns (racket:namespace-anchor->namespace ns-anc))
@@ -92,7 +108,7 @@
       (printf "correct (exactly) bin: ~a/~a\n" correct (length test-cases))
 
       ; compute homed caches
-      (define actual-bins (map (curry get-block cache-lines) actual))
+      (define actual-bins (map (curry get-block cutoffs) actual))
       (printf "actual distr: ~a\n" (map length (group-by identity (sort actual-bins <))))
       (printf "expected distr: ~a\n"
               (map (lambda (n) (/ (* n (length test-cases)) (apply + cache-lines))) cache-lines))
