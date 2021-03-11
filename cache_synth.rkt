@@ -10,34 +10,36 @@
   racket/match
   )
 
-(define hash-indices (mk-asc-ints routing-bits))
+(define hash-indices (mk-asc-ints word-size))
 
-;(define (operate bits)
-;  (map (lambda (b) (twiddle-bits b (apply choose* bits))) bits))
-
-; need some macros to generate this automatically...
 
 (define sample-bits (bitvector->bits (bv 9 4)))
+
+(define-synthax (twiddle-hole b1 b2 depth)
+  #:base (choose b1 b2)
+  #:else (choose
+          b1 b2
+          ((choose bvand bvor bvxor) (twiddle-hole b1 b2 (- depth 1))
+                                     (twiddle-hole b1 b2 (- depth 1)))))
 
 ; select bits b0 .. bn, twiddle them to b0' .. bn',
 ; then compute (b0' .. bn') % total cache lines
 (define (hash-alg addr)
-  ; (define (twiddle-bits b1 b2)
-  ;   ([choose bvand bvor bvxor] b1 b2))
-
   (define (operate bits)
+    ; need some macros to generate this automatically...
     (list
-     ([choose bvand bvor bvxor] (list-ref bits 0) (list-ref bits [choose 0 1 2 3]))
-     ([choose bvand bvor bvxor] (list-ref bits 1) (list-ref bits [choose 0 1 2 3]))
-     ([choose bvand bvor bvxor] (list-ref bits 2) (list-ref bits [choose 0 1 2 3]))
-     ([choose bvand bvor bvxor] (list-ref bits 3) (list-ref bits [choose 0 1 2 3]))
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
      ))
 
   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))
          (bits2 (operate bits))
          (cache-index (apply concat bits2)))
-;    (bvsmod cache-index (bv total-cache-lines routing-bits))))
-    cache-index))
+    ; (bvsmod cache-index (bv total-cache-lines routing-bits))
+    cache-index
+     ))
 
 
 ; by default, these variables are existentially quantified
