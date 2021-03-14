@@ -2,6 +2,8 @@
 \label{related_work}
 Generally speaking, there are two hashing methods categories: data-independent and data-dependent. Data-independent hashing methods usually generate a set of hash functions using randomization (without using any training data). In contrast,  data-dependent hashing methods usually are using unsupervised, supervised or semi-supervised learning techniques to generate the results. Here we are going to explain some relevant hashing mechanism to this report. 
 \\
+~
+\\
 \textbf{Operand locality}: Authors in \cite{compute-caches} proposed a mechanism for compute caches. In contrast to our problem, here the good results come out of locality of operands in the cache. Authors made some design choices in the cache organization such as defining banks that
 have multiple sets each and added extra bits in address decoding for "bank bits" and "block partition" \cite{compute-caches}. This approach can be used to remember adjacent strides and scatter them into different cache lines.
 \\
