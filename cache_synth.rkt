@@ -13,9 +13,6 @@
 
 (define hash-indices (mk-asc-ints word-size))
 
-
-(define sample-bits (bitvector->bits (bv 9 4)))
-
 (define-synthax (twiddle-hole b1 b2 depth)
   #:base (choose b1 b2)
   #:else (choose
@@ -29,10 +26,10 @@
   (define (operate bits)
     ; need some macros to generate this automatically...
     (list
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 2)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
      ))
 
   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))
@@ -42,9 +39,6 @@
     cache-index
      ))
 
-
-; by default, these variables are existentially quantified
-(define-symbolic x (bitvector routing-bits))
 
 (define test-asserts
   (racket:for/list
@@ -88,24 +82,25 @@
       (define hash-alg-sols
         (racket:for/list ([f (generate-forms result)])
           (racket:syntax-case f ()
-             [(_ (name _) _ ...)
+             [(_ (name args) body ...)
               (if (racket:free-transformer-identifier=? #'hash-alg #'name)
-                  f
+                  #'(lambda (args) body ...)
                   #f)]
              [_ #f])))
       (print-forms result)
-      (racket:eval-syntax (first hash-alg-sols) ns)
+      (define synth-alg
+        (racket:eval (racket:syntax->datum (first hash-alg-sols)) ns))
 
       ; get actual hashes
-      (define actual (map (lambda (t) (bitvector->natural (hash-alg (first t)))) test-cases))
-      (printf "actual hashes: ~a\n" actual)
+      (define actual (map (lambda (t) (bitvector->natural (synth-alg (first t)))) test-cases))
+      (printf "actual blocks: ~a\n" actual)
 
       ; compute accuracy
       (define correct
         (count identity
          (racket:for/list ([h actual] [t test-cases])
                           (racket:equal? h (second t)))))
-      (printf "correct (exactly) bin: ~a/~a\n" correct (length test-cases))
+      (printf "# blocks exactly matching: ~a/~a\n" correct (length test-cases))
 
       ; compute homed caches
       (define actual-bins (map (curry get-block cutoffs) actual))
@@ -113,4 +108,4 @@
       (printf "expected distr: ~a\n"
               (map (lambda (n) (/ (* n (length test-cases)) (apply + cache-lines))) cache-lines))
       )
-    (println "no solution"))
+    (printf "no solution\n"))
