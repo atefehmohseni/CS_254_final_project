@@ -1,22 +1,37 @@
 # CS_254_final_project
 
-## Installation
 
-https://download.racket-lang.org/
+This repo contains two main components, the source code used to investigate our
+topic and the final paper describing our results.  
 
-This also installs the package manager "raco" which can be used to pull in Rosette:
+## Source Code 
 
-`raco install pkg rosette`
+Inside src/, there are two subdirectories, one for each approach we
+investigated, logical synthesis and voting theory.  
 
-Alternatively, run `raco pkg install .` to install the dependencies specified in
-`info.rkt`.
+### Logical Synthesis 
 
-## Bitvector interpreter
+The first is the logical synthesis route.  It is written in Racket and can be
+run with:
 
-Emina Torlak is one of the original authors of Rosette and has some helpful code all about bitvector interpreters here:
+`racket cache_synth.rkt`
 
-https://gist.github.com/emina/132db300dc39baa524606092a4312328
+The Racket code depends on the Rosette library.  Assuming a Racket distribution,
+Rosette may be installed from the Racket package manager as:
 
-## Sample code
+`raco pkg install rosette`
 
-The `bornholt.rkt` file can be run with `racket bornholt.rkt` and should print out some basic use cases of the tool.
+### Voting Theory
+
+The second approach is based on parametrized hashing under the guise of a voting
+scheme.  It is written in Python and may be run as:
+
+`python weighted_pearson.py`
+
+This code depends on numpy and matplotlib, which may be installed with the pip
+tool, or however your distro handles python packages.
+
+## Final Paper
+
+The final paper is included in the report/ directory as a pdf with instructions
+for building it from scratch.
