@@ -103,3 +103,102 @@
 	publisher={ACM}
 }
 
+@Book{program-synthesis-survey,
+author = {Gulwani, Sumit and Polozov, Alex and Singh, Rishabh},
+title = {Program Synthesis},
+booktitle = {Foundations and Trends in Programming Languages},
+year = {2017},
+month = {August},
+abstract = {Program synthesis is the task of automatically ﬁnding a program in the underlying programming language that satisﬁes the user intent expressed in the form of some speciﬁcation. Since the inception of AI in the 1950s, this problem has been considered the holy grail of Computer Science. Despite inherent challenges in the problem such as ambiguity of user intent and a typically enormous search space of programs, the ﬁeld of program synthesis has developed many diﬀerent techniques that enable program synthesis in diﬀerent real-life application domains. It is now used successfully in software engineering, biological discovery, computer-aided education, end-user programming, and data cleaning. In the last decade, several applications of synthesis in the ﬁeld of programming by examples have been deployed in mass-market industrial products. This survey is a general overview of the state-of-the-art approaches to program synthesis, its applications, and subﬁelds. We discuss the general principles common to all modern synthesis approaches such as syntactic bias, oracle-guided inductive search, and optimization techniques. We then present a literature review covering the four most common state-of-the-art techniques in program synthesis: enumerative search, constraint solving, stochastic search, and deduction-based programming by examples. We conclude with a brief list of future horizons for the ﬁeld.},
+publisher = {NOW},
+url = {https://www.microsoft.com/en-us/research/publication/program-synthesis/},
+pages = {1-119},
+volume = {4},
+}
+
+@inproceedings{10.1145/1168857.1168907,
+author = {Solar-Lezama, Armando and Tancau, Liviu and Bodik, Rastislav and Seshia, Sanjit and Saraswat, Vijay},
+title = {Combinatorial Sketching for Finite Programs},
+year = {2006},
+isbn = {1595934510},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1168857.1168907},
+doi = {10.1145/1168857.1168907},
+abstract = {Sketching is a software synthesis approach where the programmer develops a partial implementation - a sketch - and a separate specification of the desired functionality. The synthesizer then completes the sketch to behave like the specification. The correctness of the synthesized implementation is guaranteed by the compiler, which allows, among other benefits, rapid development of highly tuned implementations without the fear of introducing bugs.We develop SKETCH, a language for finite programs with linguistic support for sketching. Finite programs include many highperformance kernels, including cryptocodes. In contrast to prior synthesizers, which had to be equipped with domain-specific rules, SKETCH completes sketches by means of a combinatorial search based on generalized boolean satisfiability. Consequently, our combinatorial synthesizer is complete for the class of finite programs: it is guaranteed to complete any sketch in theory, and in practice has scaled to realistic programming problems.Freed from domain rules, we can now write sketches as simpleto-understand partial programs, which are regular programs in which difficult code fragments are replaced with holes to be filled by the synthesizer. Holes may stand for index expressions, lookup tables, or bitmasks, but the programmer can easily define new kinds of holes using a single versatile synthesis operator.We have used SKETCH to synthesize an efficient implementation of the AES cipher standard. The synthesizer produces the most complex part of the implementation and runs in about an hour.},
+booktitle = {Proceedings of the 12th International Conference on Architectural Support for Programming Languages and Operating Systems},
+pages = {404–415},
+numpages = {12},
+keywords = {SAT, sketching},
+location = {San Jose, California, USA},
+series = {ASPLOS XII}
+}
+
+  
+
+@article{10.1145/1168917.1168907,
+author = {Solar-Lezama, Armando and Tancau, Liviu and Bodik, Rastislav and Seshia, Sanjit and Saraswat, Vijay},
+title = {Combinatorial Sketching for Finite Programs},
+year = {2006},
+issue_date = {December 2006},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {40},
+number = {5},
+issn = {0163-5980},
+url = {https://doi.org/10.1145/1168917.1168907},
+doi = {10.1145/1168917.1168907},
+abstract = {Sketching is a software synthesis approach where the programmer develops a partial implementation - a sketch - and a separate specification of the desired functionality. The synthesizer then completes the sketch to behave like the specification. The correctness of the synthesized implementation is guaranteed by the compiler, which allows, among other benefits, rapid development of highly tuned implementations without the fear of introducing bugs.We develop SKETCH, a language for finite programs with linguistic support for sketching. Finite programs include many highperformance kernels, including cryptocodes. In contrast to prior synthesizers, which had to be equipped with domain-specific rules, SKETCH completes sketches by means of a combinatorial search based on generalized boolean satisfiability. Consequently, our combinatorial synthesizer is complete for the class of finite programs: it is guaranteed to complete any sketch in theory, and in practice has scaled to realistic programming problems.Freed from domain rules, we can now write sketches as simpleto-understand partial programs, which are regular programs in which difficult code fragments are replaced with holes to be filled by the synthesizer. Holes may stand for index expressions, lookup tables, or bitmasks, but the programmer can easily define new kinds of holes using a single versatile synthesis operator.We have used SKETCH to synthesize an efficient implementation of the AES cipher standard. The synthesizer produces the most complex part of the implementation and runs in about an hour.},
+journal = {SIGOPS Oper. Syst. Rev.},
+month = oct,
+pages = {404–415},
+numpages = {12},
+keywords = {SAT, sketching}
+}
+
+  
+
+@article{10.1145/1168918.1168907,
+author = {Solar-Lezama, Armando and Tancau, Liviu and Bodik, Rastislav and Seshia, Sanjit and Saraswat, Vijay},
+title = {Combinatorial Sketching for Finite Programs},
+year = {2006},
+issue_date = {November 2006},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {41},
+number = {11},
+issn = {0362-1340},
+url = {https://doi.org/10.1145/1168918.1168907},
+doi = {10.1145/1168918.1168907},
+abstract = {Sketching is a software synthesis approach where the programmer develops a partial implementation - a sketch - and a separate specification of the desired functionality. The synthesizer then completes the sketch to behave like the specification. The correctness of the synthesized implementation is guaranteed by the compiler, which allows, among other benefits, rapid development of highly tuned implementations without the fear of introducing bugs.We develop SKETCH, a language for finite programs with linguistic support for sketching. Finite programs include many highperformance kernels, including cryptocodes. In contrast to prior synthesizers, which had to be equipped with domain-specific rules, SKETCH completes sketches by means of a combinatorial search based on generalized boolean satisfiability. Consequently, our combinatorial synthesizer is complete for the class of finite programs: it is guaranteed to complete any sketch in theory, and in practice has scaled to realistic programming problems.Freed from domain rules, we can now write sketches as simpleto-understand partial programs, which are regular programs in which difficult code fragments are replaced with holes to be filled by the synthesizer. Holes may stand for index expressions, lookup tables, or bitmasks, but the programmer can easily define new kinds of holes using a single versatile synthesis operator.We have used SKETCH to synthesize an efficient implementation of the AES cipher standard. The synthesizer produces the most complex part of the implementation and runs in about an hour.},
+journal = {SIGPLAN Not.},
+month = oct,
+pages = {404–415},
+numpages = {12},
+keywords = {SAT, sketching}
+}
+
+  
+
+@article{solar-lezama-sketching,
+author = {Solar-Lezama, Armando and Tancau, Liviu and Bodik, Rastislav and Seshia, Sanjit and Saraswat, Vijay},
+title = {Combinatorial Sketching for Finite Programs},
+year = {2006},
+issue_date = {December 2006},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {34},
+number = {5},
+issn = {0163-5964},
+url = {https://doi.org/10.1145/1168919.1168907},
+doi = {10.1145/1168919.1168907},
+abstract = {Sketching is a software synthesis approach where the programmer develops a partial implementation - a sketch - and a separate specification of the desired functionality. The synthesizer then completes the sketch to behave like the specification. The correctness of the synthesized implementation is guaranteed by the compiler, which allows, among other benefits, rapid development of highly tuned implementations without the fear of introducing bugs.We develop SKETCH, a language for finite programs with linguistic support for sketching. Finite programs include many highperformance kernels, including cryptocodes. In contrast to prior synthesizers, which had to be equipped with domain-specific rules, SKETCH completes sketches by means of a combinatorial search based on generalized boolean satisfiability. Consequently, our combinatorial synthesizer is complete for the class of finite programs: it is guaranteed to complete any sketch in theory, and in practice has scaled to realistic programming problems.Freed from domain rules, we can now write sketches as simpleto-understand partial programs, which are regular programs in which difficult code fragments are replaced with holes to be filled by the synthesizer. Holes may stand for index expressions, lookup tables, or bitmasks, but the programmer can easily define new kinds of holes using a single versatile synthesis operator.We have used SKETCH to synthesize an efficient implementation of the AES cipher standard. The synthesizer produces the most complex part of the implementation and runs in about an hour.},
+journal = {SIGARCH Comput. Archit. News},
+month = oct,
+pages = {404–415},
+numpages = {12},
+keywords = {SAT, sketching}
+}
+
+  
+

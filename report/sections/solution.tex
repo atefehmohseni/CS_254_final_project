@@ -3,6 +3,75 @@
 
 \subsection{Program Synthesis}
 
+Program synthesis \cite{program-synthesis-survey} is a field that studies the
+problem of automatically \textit{synthesizing} a program that can satisfy a
+given \textit{specification}. Specifications may vary from informal
+specifications, such as test cases, examples, or natural language, to formal
+specifications, such as formal properties or logical formulas.
+
+The characteristics of our problem make program synthesis a viable approach.
+Hash functions are typically simple with a few bitwise operations, so the search
+space is not too large relative to other types of programs. Through synthesis,
+we can formally guarantee properties about our hash function; for example, we
+may be interested in preventing strided addresses from mapping to the same
+block. We can also exploit patterns in program traces in order to improve
+performance for particular workloads.
+
+\subsubsection{Problem Formulation}
+
+To formulate the synthesis problem more precisely, suppose we have a list of
+caches $C_1, C_2, \dots, C_N$ that together have a total of $2^k$ blocks. We
+then label all blocks by $B_1, \dots, B_{2^k}$, so that the first $|C_1|$ blocks
+are in $C_1$, the next $|C_2|$ blocks are in $C_2$, and so on. Now, we want to
+synthesize a function $\mathcal{H} : \{0,1\}^n \to \{0,1\}^k$ that takes an $n$-bit
+address and computes a block $B$. Using $B$, we can use the above numbering
+scheme to determine which cache the address should be sent to.
+
+This formulation is actually more general than is needed, because we do not
+actually need to compute the block number. However, the generality does not
+hurt; for example, a future work could also use the actual block numbers
+themselves to account for different associativity levels between the caches.
+
+\subsubsection{Sketching a Hash Function}
+
+To solve our problem, we use the method of sketching
+\cite{solar-lezama-sketching}, where we define a \textit{sketch} (i.e. a
+``template'') of $\mathcal{H}$ containing \textit{holes} (i.e. a
+``placeholder'') that the synthesizer will be asked to \textit{complete} with
+actual program fragments. We observe that $\mathcal{H}$ is usually of the
+following form:
+\begin{itemize}
+\item We need to select which of the input bits $b_1, \dots, b_n$ to provide to
+  the bitwise operations, and to which operations they should be provided.
+\item To compute the $k$-bit hash, the selected bits must be passed through a
+  composition of bitwise operations.
+\end{itemize}
+Thus, to compute the hash, we use $k$ holes for the output bits, where each hole
+is drawn from the following grammar:
+
+\newcommand{\bop}[1]{\mathop{\mathsf{#1}}}
+\[
+\begin{array}{rcl}
+  H &\to& H_1 \bop{XOR} H_2 \mid H_1 \bop{AND} H_2 \mid H_1 \bop{OR} H_2
+          \mid \bop{NOT} H_1 \mid b_i
+\end{array}
+\]
+
+For example, one possible completion is $b_1 \dots b_n \mapsto b_1\dots b_k$,
+e.g. take the first $k$ bits.
+
+\subsubsection{Specifying Hash Behavior}
+
+Lastly, we must define what type of specification will be used for our synthesis
+problem. For simplicity, we decided on using a set of randomly generated
+addresses for test cases. The test cases are chosen so that there are $|C_1|$
+addresses mapped to block $C_1$, $|C_2|$ addresses mapped to block $C_2$, etc.
+We then set up the synthesizer so that it attempts to find a $\mathcal{H}$ that
+the number of test cases with expected blocks exactly matching the output blocks
+of $\mathcal{H}$ is maximized. The results are shown in the evaluation section
+below. While this optimization objective is naive and simple, it leads to rather
+quick synthesis and serves as a good starting point for future study.
+
 \subsection{Parameterized Hash Functions}
 
 In the previous section we looked at how to derive hash functions based on their
