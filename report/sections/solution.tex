@@ -1,8 +1,60 @@
-\section{Solution}
-\label{sec:solution}
+\section{Solutions}
+\label{sec:Solution}
 
 explain the solution here ...
 
-\subsection{Logical Synthesis}
+\subsection{Program Synthesis}
 
-\subsection{Voting and Weighted Hash Functions}
+\subsection{Parameterized Hash Functions}
+
+In the previous section we looked at how to derive hash functions based on their
+desired characteristics. That is, we knew what the hash function should do, but
+now what it should look like. In this section we take the opposite tack, and
+directly construct a hash function that has the desired properties. In this
+vein, we also flip our perspective of the hash function so that we look at it
+from the perspective of the caches as opposed to the memory addresses.
+
+If we imagine each cache as a voter that casts votes on a memory address then we
+could say whichever cache casts the most votes for a given address wins and is
+the hash of that address. The caches could cast as many votes as it has
+cachelines. This scheme allows us to be sensitive to the sizes of the caches
+from the outset. As it stands however, the cache with the most cachelines would
+always cast the most votes and would thus win every address.  So in some sense,
+this scheme is too sensitive to the cache sizes and we need to take a corrective
+action to partially de-weight this sensitivity.
+
+The maneuver we make is to arbitrarily select a distinguished cache and add a
+"modifier bonus" to it that increases the number of votes it can cast. For
+instance, we could add the number 4 to the distinguished cache, giving it a
+virtual 4 extra cachelines to vote with. This might make it the largest cache
+which would then make it the winner of the vote and the hash of the memory
+address. As long as we can remember how to pick the distinguished cache and how
+we derived the modifier bonus, this scheme should successfully take into account
+the weight of the cache sizes. Depending on how we choose the bonus, the larger
+caches should still overall win more memory addresses, and should fall into the
+distribution of base sizes.
+
+Choosing the distinguished cache and modifier bonus can't be done
+\textit{randomly} since that would make our hash function non-deterministic. But
+we can choose the distinguished cache by hashing! We do this by applying a
+standard, lightweight Pearson hash to the memory address and then taking the
+modulo by the number of caches to select one in particular. This strategy is
+deterministic and manages to always choose a pseudo-random cache, de-focusing
+the largest one.
+
+For the modifier bonus, we can use some property of the memory address or the
+data itself. We tested 3 possibilities: memory address modulo the number of
+caches, sum of the positive bits in the address (popcount), and the median of
+the cache sizes. This weighting component is extremely important to obtaining
+good distributions of the data. We will see that the above examples are a good
+first pass, but definitely need more attention in future tests.  
+
+As an example of this approach, we begin by assuming we have 4 caches with sizes
+3, 2, 2, 1, meaning cache 1 has 3 votes, cache 2 has 2 votes, etc. For the
+memory address \textit{m}, we could Pearson hash and mod by 4 to select cache 3.
+With cache 3 as the distinguished voter, we determine its modifier bonus as the
+median of the cache numbers.  We add 2 to the cache to caches of sizes [3, 2, 5,
+  1].  Cache 3 is now the largest and would be the hash of that memory
+address. In the next section we provide actual simulation results of this
+approach on sample memory accesses.
+
