@@ -13,21 +13,20 @@
 
 (define hash-indices (mk-asc-ints word-size))
 
-(define-synthax (twiddle-hole b1 b2 depth)
-  #:base (choose b1 b2)
-  #:else (choose
-          b1 b2
-          ((choose bvand bvor bvxor) (twiddle-hole b1 b2 (- depth 1))
-                                     (twiddle-hole b1 b2 (- depth 1)))))
+(define-grammar (twiddle-hole b1 b2)
+  [expr (choose b1 b2 ((op) (expr) (expr)))]
+  [op (choose bvand bvor bvxor)])
+
+(current-grammar-depth 1)
 
 ; select bits b0 .. bn, twiddle them to b0' .. bk',
 (define (hash-alg addr)
   (define (operate bits)
     (list
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
-     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
+     (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
      ))
 
   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))

@@ -3,6 +3,32 @@
 
 \subsection{Program Synthesis}
 
+To evaluate our synthesizer, we selected three different cache configurations
+and ran our synthesizer on a set of random test cases. For each configuration,
+the test cases consist of pairs of 16-bit addresses and block numbers
+appropriate for the configuration. We also experimented with hole depths of 1
+and 2. The results are shown in Figure~\ref{Fig:synth_results}.
+
+\begin{figure}[h]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    Configuration & Hole depth & Total test cases & Exact matches & Relative difference
+    \\ \hline
+    8, 4, 4     & 1 & 64 & 10 & 25.0\% \\ \hline
+                & 2 & 64 & 25 & 21.9\% \\ \hline
+    16, 8, 4, 4 & 1 & 64 &    & \% \\ \hline
+                & 2 & 64 &    & \% \\ \hline
+    8, 8, 8, 8  & 1 & 64 &    & \% \\ \hline
+                & 2 & 64 &    & \% \\ \hline
+  \end{tabular}
+  \caption{Cache configurations used with the synthesizer. The configuration
+    column corresponds to the cache sizes used. Exact matches corresponds to the
+    number of actual blocks matching expected blocks. Relative difference is the
+    total deviation in the actual distribution from the expected distribution.}
+  \label{Fig:synth_results}
+\end{figure}
+
 \subsection{Parameterized Hash Functions}
 
 We simulated the voting algorithm of the previous section by treating all of the

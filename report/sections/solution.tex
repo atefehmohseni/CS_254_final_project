@@ -28,9 +28,10 @@ address and computes a block $B$. Using $B$, we can use the above numbering
 scheme to determine which cache the address should be sent to.
 
 This formulation is actually more general than is needed, because we do not
-actually need to compute the block number. However, the generality does not
-hurt; for example, a future work could also use the actual block numbers
-themselves to account for different associativity levels between the caches.
+actually need to compute the block number. For example, we could take the output
+of $\mathcal{H}$ to directly be the cache number. However, the generality does
+not hurt; for example, a future work could use the actual block numbers
+themselves to account for differing associativity levels between the caches.
 
 \subsubsection{Sketching a Hash Function}
 
@@ -41,10 +42,11 @@ To solve our problem, we use the method of sketching
 actual program fragments. We observe that $\mathcal{H}$ is usually of the
 following form:
 \begin{itemize}
-\item We need to select which of the input bits $b_1, \dots, b_n$ to provide to
-  the bitwise operations, and to which operations they should be provided.
+\item $\mathcal{H}$ will select some (or all) of the input bits $b_1, \dots,
+  b_n$ to use in some operations, and to which operations they should be
+  provided.
 \item To compute the $k$-bit hash, the selected bits must be passed through a
-  composition of bitwise operations.
+  composition of operations.
 \end{itemize}
 Thus, to compute the hash, we use $k$ holes for the output bits, where each hole
 is drawn from the following grammar:
@@ -71,6 +73,14 @@ the number of test cases with expected blocks exactly matching the output blocks
 of $\mathcal{H}$ is maximized. The results are shown in the evaluation section
 below. While this optimization objective is naive and simple, it leads to rather
 quick synthesis and serves as a good starting point for future study.
+
+\subsubsection{Search Strategy and Implementation}
+
+We adopted a purely logical approach for our search strategy. We encoded the
+synthesis problem as a constraint satisfaction problem that could be solved with
+off-the-shelf SMT solvers. We implemented our synthesizer in the Racket
+programming language using the Rosette EDSL \cite{rosette}.
+
 
 \subsection{Parameterized Hash Functions}
 

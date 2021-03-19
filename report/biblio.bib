@@ -200,5 +200,21 @@ numpages = {12},
 keywords = {SAT, sketching}
 }
 
-  
+@inproceedings{rosette,
+author = {Torlak, Emina and Bodik, Rastislav},
+title = {Growing Solver-Aided Languages with Rosette},
+year = {2013},
+isbn = {9781450324724},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2509578.2509586},
+doi = {10.1145/2509578.2509586},
+abstract = {SAT and SMT solvers have automated a spectrum of programming tasks, including program synthesis, code checking, bug localization, program repair, and programming with oracles. In principle, we obtain all these benefits by translating the program (once) to a constraint system understood by the solver. In practice, however, compiling a language to logical formulas is a tricky process, complicated by having to map the solution back to the program level and extend the language with new solver-aided constructs, such as symbolic holes used in synthesis.This paper introduces ROSETTE, a framework for designing solver-aided languages. ROSETTE is realized as a solver-aided language embedded in Racket, from which it inherits extensive support for meta-programming. Our framework frees designers from having to compile their languages to constraints: new languages, and their solver-aided constructs, are defined by shallow (library-based) or deep (interpreter-based) embedding in ROSETTE itself.We describe three case studies, by ourselves and others, of using ROSETTE to implement languages and synthesizers for web scraping, spatial programming, and superoptimization of bitvector programs.},
+booktitle = {Proceedings of the 2013 ACM International Symposium on New Ideas, New Paradigms, and Reflections on Programming \& Software},
+pages = {135–152},
+numpages = {18},
+keywords = {solver-aided languages},
+location = {Indianapolis, Indiana, USA},
+series = {Onward! 2013}
+} 
 
