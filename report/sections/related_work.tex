@@ -9,7 +9,7 @@ have multiple sets each and added extra bits in address decoding for "bank bits"
 \\
 ~
 \\
-\textbf{Using synthesis for a mapping algorithm}: In \cite{synthesis-map} authors implemented a synthesizing methodology to map p-nested for loop algorithms into linear arrays. The method was based on a set of formal conditions on the sequential algorithm and the feasible "transformations" on them. 
+\textbf{Using synthesis for a mapping algorithm}: In \cite{synthesis-map} authors implemented a synthesizing methodology to map p-nested for loop algorithms into linear arrays. The method was based on a set of formal conditions on the sequential algorithm and the feasible "transformations" on them. The result was promising given the time that this paper has published.
 \\
 ~
 \\
@@ -25,14 +25,5 @@ In \cite{learning-index} authors showed that learned indexes outperforms traditi
 	\label{fig:learned_index}
 \end{figure}
 
-In the context of our problem, we should also mention that there are three different categories of cache organizations which the proposed algorithms in this report mainly focused on the associative mappings.
-\begin{itemize}
-	\item \textbf{Direct Mapped}: every memory block brought to the cache has exactly one place. It's fast but potentially resulting in poor utilization of the total cache.
-	
-	\item \textbf{Fully Associative Mapped}: every memory block can be placed in any available cache line. It has high implementation overhead but better cache utilization.
-	
-	\item \textbf{Set Associative Mapped}: every memory block can be placed in a particular set in the cache. 
-\end{itemize}
 \vspace{1mm}
 \noindent
-
