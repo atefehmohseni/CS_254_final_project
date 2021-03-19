@@ -17,7 +17,7 @@
   [expr (choose b1 b2 ((op) (expr) (expr)))]
   [op (choose bvand bvor bvxor)])
 
-(current-grammar-depth 1)
+(current-grammar-depth hole-depth)
 
 ; select bits b0 .. bn, twiddle them to b0' .. bk',
 (define (hash-alg addr)
@@ -27,6 +27,7 @@
      (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
      (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
      (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
+     ; (twiddle-hole (list-ref bits (??)) (list-ref bits (??)))
      ))
 
   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))
@@ -34,6 +35,7 @@
          (block (apply concat bits2)))
     block))
 
+(define answer-vars (mk-answer-vars (length test-cases)))
 
 (define test-asserts
   (racket:for/list

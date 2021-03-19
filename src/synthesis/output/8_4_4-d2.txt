@@ -1,0 +1,24 @@
+'(define (hash-alg addr)
+   (define (operate bits)
+     (list
+      (bvxor
+       (bvand (list-ref bits 1) (list-ref bits 15))
+       (bvand (list-ref bits 8) (list-ref bits 10)))
+      (bvand
+       (bvor (list-ref bits 9) (list-ref bits 11))
+       (bvxor (list-ref bits 2) (list-ref bits 3)))
+      (bvxor
+       (bvor (list-ref bits 14) (list-ref bits 9))
+       (bvor (list-ref bits 4) (list-ref bits 8)))
+      (bvor
+       (bvor (list-ref bits 2) (list-ref bits 2))
+       (bvand (list-ref bits 12) (list-ref bits 11)))))
+   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))
+          (bits2 (operate bits))
+          (block (apply concat bits2)))
+     block))
+actual blocks: (3 9 10 1 6 4 1 7 9 7 13 9 6 13 12 11 5 9 8 9 9 3 13 0 11 3 1 0 1 13 11 12 12 3 1 6 0 4 2 8 7 7 1 2 5 1 10 8 2 1 2 1 12 3 2 2 7 9 8 2 5 8 12 10)
+# blocks exactly matching: 25/64
+actual distr: (37 18 9)
+expected distr: (32 16 16)
+% difference: 21.875%

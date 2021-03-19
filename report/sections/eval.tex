@@ -5,7 +5,7 @@
 
 To evaluate our synthesizer, we selected three different cache configurations
 and ran our synthesizer on a set of random test cases. For each configuration,
-the test cases consist of pairs of 16-bit addresses and block numbers
+the test cases consist of pairs of a 16-bit address and a block number
 appropriate for the configuration. We also experimented with hole depths of 1
 and 2. The results are shown in Figure~\ref{Fig:synth_results}.
 
@@ -15,19 +15,46 @@ and 2. The results are shown in Figure~\ref{Fig:synth_results}.
     \hline
     Configuration & Hole depth & Total test cases & Exact matches & Relative difference
     \\ \hline
-    8, 4, 4     & 1 & 64 & 10 & 25.0\% \\ \hline
-                & 2 & 64 & 25 & 21.9\% \\ \hline
-    16, 8, 4, 4 & 1 & 64 &    & \% \\ \hline
-                & 2 & 64 &    & \% \\ \hline
-    8, 8, 8, 8  & 1 & 64 &    & \% \\ \hline
-                & 2 & 64 &    & \% \\ \hline
+    8, 4, 4     & 1 & 64  & 10 & 25.0\% \\
+                & 2 & 64  & 25 & 21.9\% \\ \hline
+    16, 8, 4, 4 & 1 & 128 & 15 & 7.81\% \\
+                & 2 & 128 & 17 & 10.9\% \\ \hline
+    8, 8, 8, 8  & 1 & 128 & 15 & 50.0\% \\
+                & 2 & 128 & 23 & 25.0\% \\ \hline
   \end{tabular}
   \caption{Cache configurations used with the synthesizer. The configuration
     column corresponds to the cache sizes used. Exact matches corresponds to the
     number of actual blocks matching expected blocks. Relative difference is the
-    total deviation in the actual distribution from the expected distribution.}
+    total deviation in the actual distribution of homed caches from the expected
+    distribution of homed caches.}
   \label{Fig:synth_results}
 \end{figure}
+
+Note that increasing the depth tends to sometimes, but not always, decrease the
+relative difference rate. However, this comes at the cost of expanding the
+search space. There also need to be enough random test cases to cover all blocks
+and addresses in the configuration, or the synthesizer will risk overfitting
+like in machine learning approaches. For example, if all test cases end up
+having addresses less than some amount $N$, then the resulting hash function may
+not select the higher-valued bits of $N$.
+
+This project made us realize that coming up with a good objective function and
+search strategy is very difficult. As can be observed in the table, the
+objective function of simply matching up blocks is not a good fit for the
+synthesis task. For example, the 8, 8, 8, 8 depth 1 configuration achieves a
+relative difference of 50\% and would be completely outclassed by a simple
+hashing scheme. We also tried an objective function that minimizes the absolute
+difference, but we did not find a way to make it efficient enough to terminate
+within a reasonable amount of time. Future work could include optimizing the
+helper functions to be more amenable to logical encoding, devising a better
+objective function, and integrating machine learning techniques to improve the
+search strategy.
+
+The sketch was comparably easier to construct than the objective function, but
+there is still room for improvement. We currently treat the sketch as a black
+box binary function, but we could incorporate aspects from more interesting hash
+functions like the parameterized hash function approach we have described in
+this report.
 
 \subsection{Parameterized Hash Functions}
 
