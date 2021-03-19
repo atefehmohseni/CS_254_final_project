@@ -20,11 +20,9 @@
           ((choose bvand bvor bvxor) (twiddle-hole b1 b2 (- depth 1))
                                      (twiddle-hole b1 b2 (- depth 1)))))
 
-; select bits b0 .. bn, twiddle them to b0' .. bn',
-; then compute (b0' .. bn') % total cache lines
+; select bits b0 .. bn, twiddle them to b0' .. bk',
 (define (hash-alg addr)
   (define (operate bits)
-    ; need some macros to generate this automatically...
     (list
      (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
      (twiddle-hole (list-ref bits (??)) (list-ref bits (??)) 1)
@@ -34,10 +32,8 @@
 
   (let* ((bits (map (lambda (i) (bit i addr)) hash-indices))
          (bits2 (operate bits))
-         (cache-index (apply concat bits2)))
-    ; (bvsmod cache-index (bv total-cache-lines routing-bits))
-    cache-index
-     ))
+         (block (apply concat bits2)))
+    block))
 
 
 (define test-asserts
@@ -104,8 +100,18 @@
 
       ; compute homed caches
       (define actual-bins (map (curry get-block cutoffs) actual))
-      (printf "actual distr: ~a\n" (map length (group-by identity (sort actual-bins <))))
-      (printf "expected distr: ~a\n"
-              (map (lambda (n) (/ (* n (length test-cases)) (apply + cache-lines))) cache-lines))
+      (define actual-distr
+        (map length (group-by identity (sort actual-bins <))))
+      (define expected-distr
+        (map
+         (lambda (n) (/ (* n (length test-cases)) (apply + cache-lines)))
+         cache-lines))
+      (printf "actual distr: ~a\n" actual-distr)
+      (printf "expected distr: ~a\n" expected-distr)
+      (printf "% difference: ~a%\n"
+              (let ((deviation
+                     (apply + (goal-diff actual-distr expected-distr)))
+                    (total (length test-cases)))
+                (exact->inexact (* 100 (/ deviation total)))))
       )
     (printf "no solution\n"))
