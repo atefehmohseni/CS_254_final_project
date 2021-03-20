@@ -92,11 +92,11 @@ directly construct a hash function $\mathcal{H}$ that has the desired
 properties. In this vein, we also flip our take on $\mathcal{H}$ so that we look
 at it from the perspective of the caches as opposed to the memory addresses.
 
-If we imagine each cache as a voter, with as many votes as cachelines, then a
+If we imagine each cache as a voter, with as many votes as cache lines, then a
 cache could cast votes on a memory address.  We could then say whichever cache
 casts the most votes for a given address wins and is the hash of that
 address. This scheme is sensitive to the cache sizes from the outset. As it
-stands however, the cache with the most cachelines would always cast the most
+stands however, the cache with the most cache lines would always cast the most
 votes and would thus win every address.  In some sense, this scheme is too
 sensitive to the cache sizes and we need to take a corrective action,
 \textit{de-weighting} this sensitivity.
@@ -106,7 +106,7 @@ sensitive to the cache sizes and we need to take a corrective action,
 The maneuver we make is to arbitrarily select a distinguished cache and add a
 "modifier bonus" to it that increases the number of votes it can cast. For
 instance, we could add the number 4 to the distinguished cache, giving it a
-virtual 4 extra cachelines to vote with. This might make it the largest cache
+virtual 4 extra cache lines to vote with. This might make it the largest cache
 which would then make it the winner of the vote as well as the hash of the
 memory address.  As long as we can remember how to pick the distinguished cache
 and how we derived the modifier bonus, and depending on how we choose the bonus,
