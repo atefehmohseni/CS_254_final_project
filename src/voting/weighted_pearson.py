@@ -15,7 +15,7 @@ def hash8(message: str, table) -> int:
 
 def weighted_voting(mem_addr, cache_array, modifier="modulo"):    
     # pearson hash and mod by # of tiles to get a distinguished tile
-    distinguished_tile = hash8(str(hex(mem_addr)), cache_table) % len(caches)
+    distinguished_tile = hash8(str(hex(mem_addr)), cache_table) % len(cache_array)
 
     # use a numeric property of the memory addr e.g. sum 
     # of the bits, or its length, to add as a modifier bonus 
@@ -25,10 +25,10 @@ def weighted_voting(mem_addr, cache_array, modifier="modulo"):
     elif modifier == "popcount":
         modifier_bonus = bin(mem_addr).count("1")                       # sum of positive bits
     else:
-        modifier_bonus = np.median(caches)                             # median of cache sizes
+        modifier_bonus = np.median(cache_array)                             # median of cache sizes
 
     # copy old array to make a new one with the modifier bonus
-    voters = caches.copy()
+    voters = cache_array.copy()
     voters[distinguished_tile] += modifier_bonus
 
     # majority sum decides the memory address's home tile
