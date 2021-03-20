@@ -27,7 +27,7 @@ synthesize a function $\mathcal{H} : \{0,1\}^n \to \{0,1\}^k$ that takes an $n$-
 address and computes a block $B$. Using $B$, we can use the above numbering
 scheme to determine which cache the address should be sent to.
 
-This formulation is actually more general than is needed, because we do not
+This formulation is actually more general than is necessary, because we do not
 actually need to compute the block number. For example, we could take the output
 of $\mathcal{H}$ to directly be the cache number. However, the generality does
 not hurt; for example, a future work could use the actual block numbers
@@ -68,11 +68,12 @@ Lastly, we must define what type of specification will be used for our synthesis
 problem. For simplicity, we decided on using a set of randomly generated
 addresses for test cases. The test cases are chosen so that there are $|C_1|$
 addresses mapped to block $C_1$, $|C_2|$ addresses mapped to block $C_2$, etc.
-We then set up the synthesizer so that it attempts to find a $\mathcal{H}$ that
-the number of test cases with expected blocks exactly matching the output blocks
-of $\mathcal{H}$ is maximized. The results are shown in the evaluation section
-below. While this optimization objective is naive and simple, it leads to rather
-quick synthesis and serves as a good starting point for future study.
+We then set up the synthesizer so that it attempts to find a function
+$\mathcal{H}$ so that the number of test cases with expected blocks exactly
+matching the output blocks of $\mathcal{H}$ is maximized. The results are shown
+in the evaluation section below. While this optimization objective is naive and
+simple, it leads to rather quick synthesis and serves as a good starting point
+for future study.
 
 \subsubsection{Search Strategy and Implementation}
 
@@ -86,52 +87,62 @@ programming language using the Rosette EDSL \cite{rosette}.
 
 In the previous section we looked at how to derive hash functions based on their
 desired characteristics. That is, we knew what the hash function should do, but
-now what it should look like. In this section we take the opposite tack, and
-directly construct a hash function that has the desired properties. In this
-vein, we also flip our perspective of the hash function so that we look at it
-from the perspective of the caches as opposed to the memory addresses.
+not what it should look like. In this section we take the opposite tack, and
+directly construct a hash function $\mathcal{H}$ that has the desired
+properties. In this vein, we also flip our take on $\mathcal{H}$ so that we look
+at it from the perspective of the caches as opposed to the memory addresses.
 
-If we imagine each cache as a voter that casts votes on a memory address then we
-could say whichever cache casts the most votes for a given address wins and is
-the hash of that address. The caches could cast as many votes as it has
-cachelines. This scheme allows us to be sensitive to the sizes of the caches
-from the outset. As it stands however, the cache with the most cachelines would
-always cast the most votes and would thus win every address.  So in some sense,
-this scheme is too sensitive to the cache sizes and we need to take a corrective
-action to partially de-weight this sensitivity.
+If we imagine each cache as a voter, with as many votes as cachelines, then a
+cache could cast votes on a memory address.  We could then say whichever cache
+casts the most votes for a given address wins and is the hash of that
+address. This scheme is sensitive to the cache sizes from the outset. As it
+stands however, the cache with the most cachelines would always cast the most
+votes and would thus win every address.  In some sense, this scheme is too
+sensitive to the cache sizes and we need to take a corrective action,
+\textit{de-weighting} this sensitivity.
 
+\subsubsection{Caches as Voters}
+  
 The maneuver we make is to arbitrarily select a distinguished cache and add a
 "modifier bonus" to it that increases the number of votes it can cast. For
 instance, we could add the number 4 to the distinguished cache, giving it a
 virtual 4 extra cachelines to vote with. This might make it the largest cache
-which would then make it the winner of the vote and the hash of the memory
-address. As long as we can remember how to pick the distinguished cache and how
-we derived the modifier bonus, this scheme should successfully take into account
-the weight of the cache sizes. Depending on how we choose the bonus, the larger
-caches should still overall win more memory addresses, and should fall into the
-distribution of base sizes.
+which would then make it the winner of the vote as well as the hash of the
+memory address.  As long as we can remember how to pick the distinguished cache
+and how we derived the modifier bonus, and depending on how we choose the bonus,
+the larger caches should still overall win more memory addresses, and should
+fall into the distribution of base sizes.
 
 Choosing the distinguished cache and modifier bonus can't be done
 \textit{randomly} since that would make our hash function non-deterministic. But
-we can choose the distinguished cache by hashing! We do this by applying a
-standard, lightweight Pearson hash to the memory address and then taking the
-modulo by the number of caches to select one in particular. This strategy is
-deterministic and manages to always choose a pseudo-random cache, de-focusing
-the largest one.
+we can choose the distinguished cache by hashing. We do this by applying a
+standard, lightweight Pearson hash to the memory address, and then taking the
+modulus by the number of caches, to select one cache in particular. This
+strategy is deterministic and manages to always choose a pseudo-random cache,
+successfully de-focusing the largest one.  A description of the algorithm is
+given below.
+
+\begin{algorithm}
+  \caption{cache voting algorithm}
+  \begin{algorithmic}[1]
+    \REQUIRE cache\_array, a list of integers denoting corresponding cache size
+    \REQUIRE pearson, an impl of the 256-bit Pearson hash function
+    \REQUIRE maddr, a memory address
+    \STATE distinguished\_tile $\leftarrow$ pearson(maddr) $ \% \; |cache\_array| $
+    \STATE modifier\_bonus $\leftarrow$ maddr $ \% \; |cache\_array|$
+    \STATE cache-array[distinguished\_tile] $+=$ modifier\_bonus
+    \STATE home\_tile $\leftarrow$ argmax(cache\_array)
+    \RETURN home\_tile
+  \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{the Modifier Bonus and Implementation }
 
 For the modifier bonus, we can use some property of the memory address or the
 data itself. We tested 3 possibilities: memory address modulo the number of
 caches, sum of the positive bits in the address (popcount), and the median of
 the cache sizes. This weighting component is extremely important to obtaining
 good distributions of the data. We will see that the above examples are a good
-first pass, but definitely need more attention in future tests.  
-
-As an example of this approach, we begin by assuming we have 4 caches with sizes
-3, 2, 2, 1, meaning cache 1 has 3 votes, cache 2 has 2 votes, etc. For the
-memory address \textit{m}, we could Pearson hash and mod by 4 to select cache 3.
-With cache 3 as the distinguished voter, we determine its modifier bonus as the
-median of the cache numbers.  We add 2 to the cache to caches of sizes [3, 2, 5,
-  1].  Cache 3 is now the largest and would be the hash of that memory
-address. In the next section we provide actual simulation results of this
-approach on sample memory accesses.
+first pass, but definitely need more attention in future tests.  The code was
+implemented in Python without any library dependencies.
 
