@@ -59,7 +59,7 @@ this report.
 \subsection{Parameterized Hash Functions}
 
 For the voting algorithm, we approached simulation by treating all of the
-numbers in the ranges of $[0, 2^{8}]$ and $[0, 2^{16}]$ as memory addresses and
+numbers in the ranges of $[0, 2^{8})$ and $[0, 2^{16})$ as memory addresses and
 hashing them against a simple array of 4 caches of sizes 3, 2, 2, and 1.  While
 we tested mainly with this setup, the number of caches and their sizes are
 easily configurable.  The graphs below show the histograms of the homed data,
@@ -71,13 +71,13 @@ positive bits, and addition of the median number of caches.
 \begin{figure}[h]
   \centering
   \begin{minipage}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{homes.png}
+    \includegraphics[width=\textwidth]{figures/homes.png}
     \caption{256 bit memory space}
     \label{Fig:homes}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{homes2.png}
+    \includegraphics[width=\textwidth]{figures/homes2.png}
     \caption{65536 bit memory space }
     \label{Fig:homes2}
   \end{minipage}
@@ -89,25 +89,23 @@ Interestingly, the remaining two approaches, modulo and median, do roughly match
 the distribution of cache sizes, with most data going to the default largest
 cache, less going to the middle two largest caches, and the least going to the
 smallest cache.  The median performs much closer to the ground truth, however it
-is not clear what this intuitively captures about the data.  Finally, the modulo
-scheme seems to unduly weight the largest cache, but as it roughly captures the
-relative caches sizes, we might be able to temper this somehow.  While these
-weighting schemes don't quite capture the distribution exactly, it is clear that
-they can be modified to provide a more robust picture of the cache size
-distributions.
+is not clear what this intuitively captures about the data.  The modulo scheme
+seems to unduly weight the largest cache, but still roughly captures the
+relative caches sizes.  While these weighting schemes don't quite capture the
+distribution exactly, it is clear that they can be modified to provide a more
+robust picture of the cache size distributions.
 
-There are a number of improvements that we could make as a second pass in
-hardening this approach.  The number and sizes of caches should be changed
-widely, and the sizes of the caches should be powers of 2, or simple arithmetic
-combinations of powers of 2, to mimic real world conditions. As noted
-previously, the weighting function is crucial to observing a smooth distribution
-matching the cache sizes.  The options we tried should be expanded to find
-better matches.
+There are a number of improvements that we could make, including making sizes of
+the caches powers of 2, or simple arithmetic combinations of powers of 2, to
+mimic real world conditions. As noted previously, the weighting function is
+crucial to observing a smooth distribution matching the cache sizes.  The
+options we tried should be expanded to find better matches.
 
 Finally, the hash function we used was the Pearson function, which is
-traditionally based on a 256-bit table of randomized seed values.  To minimize
-the impact of this on memory in a production many-core system, this can be
-replaced with alternative metrics, such as a subtraction of the memory address
-from 256. Ultimately, however, we can conclude that the above schemes, both
-synthesis and voting, are flexible and highly configurable approaches to
-parameterizing cache-based hash functions.
+traditionally based on a 256-bit table of randomized seed values.  This table of
+seed values is implemented as a lookup table, which unfortunately, can be
+expensive in production many-core systems.  The table can be replaced with
+alternative strategies, such as a subtraction of the memory address from
+256. Ultimately, however, we can conclude that the above schemes, both synthesis
+and voting, are flexible and highly configurable approaches to parameterizing
+cache-based hash functions.

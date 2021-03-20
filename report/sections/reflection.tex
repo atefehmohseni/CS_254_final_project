@@ -5,11 +5,11 @@
 This project began as an exploration of applying tools from programming language
 theory to hardware architecture.  The notion of a hash function for homing
 memory to tiles is a well-defined component of a processor and has the advantage
-of being relatively abstract, without requiring large amounts of hardware-specific
-knowledge.  While we ultimately derived two interesting strategies for this
-problem, one of which was indeed based on a tool from programming language
-theory, the progress we made was built on a couple of weeks of background
-reading as well as a fair amount of trial and error.
+of being relatively abstract, without requiring large amounts of
+hardware-specific knowledge.  While we ultimately derived two interesting
+strategies for solving this problem, one of which was indeed based on a tool
+from programming language theory, the progress we made was built on a couple of
+weeks of background reading as well as a fair amount of trial and error.
 
 We began by reading about caches and homing strategies in manycore designs until
 we felt we had a pretty good idea of what the bounds of the problem were.  We
@@ -17,19 +17,19 @@ also spent some time reading about hash functions, learning about their
 typology, including the universal, cryptographic, and hardware varieties.  On
 the programming language front, we decided to explore a synthesis methodology,
 and worked to build a few examples of simple synthesis tasks over the theory of
-bitvectors.  Throughout our investigating we also learned about how problems
+bitvectors.  Throughout our investigations, we also learned about how problems
 similar to this were addressed in the machine learning space.
 
 Our first few attempts at approaching the problem stalled for a few reasons.
-While the requirements of the problem are easy to state in prose, namely that we
-want a hash function that distributes memory addresses to tiles according to a
-specific distribution in aggregate, that is based on simple bitvector
-operations, it was not clear how to state this in our synthesis tool.  During
-this back-and-forth process, we ended up tackling the problem from the analytic
-approach as well as the synthetic.  It turned out thinking about the problem
-from both ends \textit{both} proved worth pursuing, which is how we eventually
-were able to provide two distinct solutions to the problem.  The code, sweat,
-and tears are all included in the commits of this repo, including programs in
-both Racket and Python that may be explored by the interested reader.
+While the requirements of the problem are easy to state in prose, it was not
+clear how to state this in our synthesis tool.  Namely, we want a hash function
+that distributes memory addresses to tiles according to a specific distribution
+in aggregate and is based on simple bitvector operations.  As we went
+back-and-forth trying to express these requirements, we ended up tackling the
+problem from the analytic approach as well as the synthesis.  It turned out that
+thinking about the problem from both ends is how we eventually were able to
+provide \textit{two} distinct solutions to the problem.  The code, sweat, and tears are
+all included in the commits of this repo, including programs in both Racket and
+Python that may be explored by the interested reader.
 
 
