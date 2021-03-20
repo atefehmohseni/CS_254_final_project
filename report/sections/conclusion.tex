@@ -1,0 +1,14 @@
+\section{Conclusion}
+\label{sec:Conclusion}
+In this study we worked on hardware hash functions to efficiently map memory
+addressees to caches given we have different tile sizes. We have tried two
+approaches: program synthesis and parameterized hashing. In the first approach,
+we tried to sketch a hash function to apply different operators on different
+parts of a memory address and returns what gives us the most accuracy meaning
+passed the most test cases. In the second approach we simulated a hash function
+as a voting scheme that map addresses to cache lines based on bin
+sizes. Although the experiments results of both approach were successful but
+still there is room for improvement. As the future work we can mix both
+approaches and check the result or make machine learning based hash functions
+like "learned indexes" efficient for the hardware level.
+
