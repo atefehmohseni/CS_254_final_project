@@ -11,15 +11,7 @@ investigated, logical synthesis and voting theory.
 
 ### Logical Synthesis 
 
-The first is the logical synthesis route.  It is written in Racket and can be
-run with:
-
-`racket cache_synth.rkt`
-
-The Racket code depends on the Rosette library.  Assuming a Racket distribution,
-Rosette may be installed from the Racket package manager as:
-
-`raco pkg install rosette`
+[See the readme here](/src/synthesis/README.md).
 
 ### Voting Theory
 
