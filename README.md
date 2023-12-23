@@ -1,4 +1,4 @@
-# CS_254_final_project
+# Hardware Hash Functions
 
 
 This repo contains two main components, the source code used to investigate our
@@ -26,4 +26,4 @@ tool, or however your distro handles python packages.
 ## Final Paper
 
 The final paper is included in the report/ directory as a pdf with instructions
-for building it from scratch. You can also download it from [here](https://github.com/atefehmohseni/CS_254_final_project/blob/main/report/CS254_Hardware_Hash_Functions.pdf).
+for building it from scratch. You can also download it from [here](https://github.com/atefehmohseni/CS_254_final_project/blob/main/report/Hardware_Hash_Functions.pdf).
